@@ -20,11 +20,7 @@ def set_column_width(ColumnWidth, MaxRows):
     pd.options.display.max_colwidth = ColumnWidth
     pd.options.display.max_rows = MaxRows
     print('Set pandas dataframe column width to', ColumnWidth, 'and max rows to', MaxRows)
-    
-interact(set_column_width, 
-         ColumnWidth=widgets.IntSlider(min=50, max=400, step=50, value=200),
-         MaxRows=widgets.IntSlider(min=50, max=500, step=100, value=100));
-         
+             
 # Where are all the files located
 input_dir = PurePath('2020-03-13')
 
@@ -39,7 +35,6 @@ metadata.doi = metadata.doi.fillna('').apply(doi_url)
 
 # Set the abstract to the paper title if it is null
 metadata.abstract = metadata.abstract.fillna(metadata.title)
-
 
 # Some papers are duplicated since they were collected from separate sources. Thanks Joerg Rings
 duplicate_paper = ~(metadata.title.isnull() | metadata.abstract.isnull()) & (metadata.duplicated(subset=['title', 'abstract']))
@@ -236,7 +231,6 @@ class WordTokenIndex:
 
 # # Using rankBM25 search index
 
-
 class RankBM25Index(WordTokenIndex):
     
     def __init__(self, corpus: pd.DataFrame, columns=SEARCH_DISPLAY_COLUMNS):
@@ -255,16 +249,12 @@ class RankBM25Index(WordTokenIndex):
 
 bm25_index = RankBM25Index(metadata.head(len(metadata)))
 
-# # 5. Creating autocomplete text bar
+# # 5. Searching loop
 
-from IPython.display import display
+SearchTerms = input('Terms: ')
+bm25_index.search(SearchTerms,n=100)
 
-def search_papers(SearchTerms: str):
-    search_results = bm25_index.search(SearchTerms, n=100)
-    if len(search_results) > 0:
-        display(search_results) 
-    return search_results
-
-searchbar = widgets.interactive(search_papers, SearchTerms='mexico')
-display(searchbar)
+search_results = bm25_index.search(SearchTerms, n=100)
+if len(search_results) > 0:
+    print(search_results[0].title()) 
 
