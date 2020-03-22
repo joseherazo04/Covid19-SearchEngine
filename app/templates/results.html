@@ -9,17 +9,6 @@
     <title>Covid-19 Papers</title>
  </head>
 
-<!--script language="Javascript">
-    function populateText() {
-        var data = document.getElementsByName("goodSummary");
-        for (const item of data) {
-            item.innerHTML = item.textContent
-        }
-    }
-</script>
-
-<body onload="populateText()"-->
-
 <div class="container">
     <div style="background:transparent !important" class="jumbotron">
         <div style="font-family: 'Times New Roman'">
@@ -54,8 +43,8 @@
             <tr>
                 <th>Title</th>
                 <th>Abstract</th>
-                <th>DOI</th> 
-                <th>Score</th>
+                <th>Authors</th> 
+                <th>DOI</th>
             </tr>
         </thead>
 
@@ -64,8 +53,8 @@
             <tr>
                <TD class="c2">{{item.title}}</TD>
                <TD class="c3">{{item.abstract}}</TD>
-               <TD class="c4"><SPAN>{{item.doi}}</SPAN></TD>
-               <TD class="c5"><SPAN>{{item.score}}</SPAN></TD>
+               <TD class="c4"><SPAN>{{item.authors}}</SPAN></TD>
+               <TD class="c5"><SPAN>{{item.doi}}</SPAN></TD>
             </tr>
         </tbody>
         {% endfor %}
