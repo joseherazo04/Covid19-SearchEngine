@@ -11,6 +11,11 @@ import requests
 from requests.exceptions import HTTPError, ConnectionError
 import numpy as np 
 
+'''
+SET INDEX FILE NAME
+'''
+index_file_name = 'index202003221215.pickle'
+
 SEARCH_DISPLAY_COLUMNS = ['title', 'abstract', 'doi', 'authors', 'journal']
 english_stopwords = list(set(stopwords.words('english')))
 
@@ -153,7 +158,10 @@ class SearchResults:
 
 app = Flask(__name__)
 
-with open('indexes.pickle', 'rb') as f:
+'''
+OPEN INDEX FILE
+'''
+with open(index_file_name, 'rb') as f:
     bm25_index = pickle.load(f)
 
 @app.route('/')
