@@ -6,7 +6,6 @@ import re
 import nltk
 from rank_bm25 import BM25Okapi
 from nltk.corpus import stopwords
-import ipywidgets as widgets
 import requests
 from requests.exceptions import HTTPError, ConnectionError
 import numpy as np 
