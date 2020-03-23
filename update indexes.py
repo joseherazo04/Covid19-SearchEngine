@@ -246,5 +246,5 @@ print("saving index file...: "+file_name)
 with open(file_name, 'wb') as f:
     pickle.dump(bm25_index, f)
 
-print("saved file: "+file_name")
+print("saved file: "+file_name)
 
