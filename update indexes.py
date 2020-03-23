@@ -4,8 +4,6 @@ from pathlib import Path, PurePath
 import pandas as pd
 import requests
 from requests.exceptions import HTTPError, ConnectionError
-from ipywidgets import interact
-import ipywidgets as widgets
 from rank_bm25 import BM25Okapi
 import nltk
 from nltk.corpus import stopwords
@@ -16,10 +14,10 @@ import pandas as pd
 '''
 FILES PATH
 '''
-input_dir = PurePath('2020-03-13')
+input_dir = PurePath('2020-03-23')
 
 # The all sources metadata file
-metadata = pd.read_csv(input_dir / 'all_sources_metadata_2020-03-13.csv',
+metadata = pd.read_csv(input_dir / 'metadata.csv',
                        dtype={'Microsoft Academic Paper ID': str,
                              'pubmed_id': str})
 
@@ -230,7 +228,7 @@ class RankBM25Index(WordTokenIndex):
 '''
 CREATE INDEX
 '''
-print("Creating index")
+print("Creating index...")
 bm25_index = RankBM25Index(metadata.head(len(metadata)))
 
 '''
@@ -243,8 +241,10 @@ now = datetime.datetime.now()
 
 file_name='index'+now.strftime('%Y%m%d%H%M')+'.pickle'
 
-print("saving index file: "+file_name)
+print("saving index file...: "+file_name)
 
 with open(file_name, 'wb') as f:
     pickle.dump(bm25_index, f)
+
+print("saved file: "+file_name")
 
