@@ -6,14 +6,15 @@ import re
 import nltk
 from rank_bm25 import BM25Okapi
 from nltk.corpus import stopwords
+import numpy as np 
 import requests
 from requests.exceptions import HTTPError, ConnectionError
-import numpy as np 
 
 '''
 SET INDEX FILE NAME
 '''
-index_file_name = 'index202003221215.pickle'
+index_file_name = 'index202003221215'
+date=index_file_name[5:9]+'-'+index_file_name[9:11]+'-'+index_file_name[11:13] 
 
 SEARCH_DISPLAY_COLUMNS = ['title', 'abstract', 'doi', 'authors', 'journal']
 english_stopwords = list(set(stopwords.words('english')))
@@ -160,17 +161,17 @@ app = Flask(__name__)
 '''
 OPEN INDEX FILE
 '''
-with open(index_file_name, 'rb') as f:
+with open(index_file_name+'.pickle', 'rb') as f:
     bm25_index = pickle.load(f)
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('home.html',date=date)
 
 @app.route('/search/results', methods=['GET','POST'])
 def request_search():
     search_terms = request.form['input']
-    search_results = bm25_index.search(search_terms, n=100)
+    search_results = bm25_index.search(search_terms, n=200)
     total_results=len(search_results)
 
     items = []
@@ -183,7 +184,7 @@ def request_search():
                     doi=search_results[i].doi())
         items.append(item)
 
-    return render_template('results.html', items=items, search_terms=search_terms)
+    return render_template('results.html', items=items, search_terms=search_terms, date=date)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
